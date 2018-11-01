@@ -18,14 +18,22 @@ const bl = require('bl')
 const URI = require('urijs')
 
 const TMP = path.join(os.tmpdir(), 'sticker-convert-bot')
-rimraf(TMP)
-mkdir(TMP)
+
+const clean = () => {
+  log.info('Taking out the trash... (Removing temporary files...)')
+  rimraf(TMP)
+  mkdir(TMP)
+  log.info('Done!')
+}
 
 const Sentry = require('@sentry/node')
 Sentry.init({})
 
 const pino = require('pino')
 const log = pino({name: 'tg-sticker-convert-bot'})
+
+clean()
+setInterval(clean, 3600 * 1000) // fixes disk filling with failed dls
 
 const MAX_SIZE = 25 * 1024 * 1024
 
@@ -74,15 +82,26 @@ const tgFetch = async (file, msg) => {
 const webFetchToTmp = async (url, postname) => {
   const res = await fetch(url)
 
-  // console.log(res) // TODO: check mime & size
-
   let tmp = getTMP(postname)
 
   log.info({tmp, url}, 'Downloading %s to %s...', url, tmp)
 
+  if (res.headers.get('content-type') && !res.headers.get('content-type').startsWith('image/')) {
+    throw new Error('Not an image')
+  }
+
   await new Promise((resolve, reject) => {
     const dest = fs.createWriteStream(tmp)
     res.body.pipe(dest)
+    let dlSize = 0
+    res.body.on('data', data => {
+      dlSize += data.length
+      if (dlSize > MAX_SIZE) { // someone is downloading an ISO or stuff
+        dest.close()
+        res.body.close()
+        reject(new Error('Too big!'))
+      }
+    })
     res.body.on('error', err => {
       reject(err)
     })
@@ -163,6 +182,8 @@ bot.on('text', async (msg) => {
       await doConvert(loc, msg.reply, {fileName: nameToPng(url), asReply: true})
     } catch (e) {
       msg.reply.text('ERROR: Couldn\'t convert ' + url, {webPreview: false, asReply: true})
+      log.error(e)
+      Sentry.captureException(e)
     }
   }))
 })
