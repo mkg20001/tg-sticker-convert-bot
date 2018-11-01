@@ -17,6 +17,7 @@
   "author": "Maciej Krüger <mkg20001@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
+    "@sentry/node": "^4.2.3",
     "bl": "^2.1.2",
     "mkdirp": "^0.5.1",
     "node-fetch": "^2.2.0",
