@@ -1,0 +1,26 @@
+{
+  "name": "tg-sticker-convert-bot",
+  "version": "0.0.1",
+  "description": "Converts Telegram Photos / Documents into the required 512 .PNG format",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "telegram",
+    "sticker",
+    "convert",
+    "bot"
+  ],
+  "author": "Maciej Krüger <mkg20001@gmail.com>",
+  "license": "MPL-2.0",
+  "dependencies": {
+    "bl": "^2.1.2",
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^2.2.0",
+    "pino": "^5.8.0",
+    "rimraf": "^2.6.2",
+    "telebot": "^1.2.6",
+    "urijs": "^1.19.1"
+  }
+}
