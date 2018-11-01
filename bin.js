@@ -134,6 +134,10 @@ bot.on('photo', async (msg) => {
 })
 
 bot.on('text', async (msg) => {
+  if (msg.trim().text.startsWith('/')) { // ignore cmds
+    return
+  }
+
   let urls = []
   URI.withinString(msg.text, (url) => urls.push(url))
   if (!urls.length) {
