@@ -26,6 +26,12 @@ const log = pino({name: 'tg-sticker-convert-bot'})
 
 const MAX_SIZE = 25 * 1024 * 1024
 
+const nameToPng = (name) => {
+  name = path.basename(name)
+  const {ext} = path.parse(name)
+  return name.replace(ext, '.png')
+}
+
 const exec = (cmd, args) => new Promise((resolve, reject) => {
   const p = cp.spawn(cmd, args, {stdio: 'pipe'})
   p.stdout = p.stdout.pipe(bl())
@@ -120,7 +126,7 @@ bot.on('document', async (msg) => {
 
   const location = await tgFetch(doc)
 
-  await doConvert(location, msg.reply, {fileName: path.basename(doc.file_name).split('.').shift() + '.png', asReply: true})
+  await doConvert(location, msg.reply, {fileName: nameToPng(doc.file_name), asReply: true})
 })
 
 bot.on('photo', async (msg) => {
@@ -151,7 +157,7 @@ bot.on('text', async (msg) => {
   await Promise.all(urls.map(async (url) => {
     try {
       const loc = await webFetchToTmp(url)
-      await doConvert(loc, msg.reply, {caption: url, asReply: true})
+      await doConvert(loc, msg.reply, {fileName: nameToPng(url), asReply: true})
     } catch (e) {
       msg.reply.text('ERROR: Couldn\'t convert ' + url, {webPreview: false, asReply: true})
     }
