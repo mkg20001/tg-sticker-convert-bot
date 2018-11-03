@@ -86,9 +86,9 @@ const webFetchToTmp = async (url, postname) => {
 
   log.info({tmp, url}, 'Downloading %s to %s...', url, tmp)
 
-  if (res.headers.get('content-type') && !res.headers.get('content-type').startsWith('image/')) {
+  /* if (res.headers.get('content-type') && !res.headers.get('content-type').startsWith('image/')) {
     throw new Error('Not an image')
-  }
+  } */
 
   await new Promise((resolve, reject) => {
     const dest = fs.createWriteStream(tmp)
