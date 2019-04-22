@@ -27,7 +27,7 @@ const clean = () => {
 }
 
 const Sentry = require('@sentry/node')
-Sentry.init({})
+Sentry.init({dsn: process.env.SENTRY_DSN})
 
 const pino = require('pino')
 const log = pino({name: 'tg-sticker-convert-bot'})
