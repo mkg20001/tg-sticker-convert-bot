@@ -120,8 +120,9 @@ const webFetchToTmp = async (url, postname) => {
 }
 
 const origOn = bot.on.bind(bot)
+let events = {}
 bot.on = (ev, fnc, ...a) => {
-  origOn(ev, async (msg, ...a) => {
+  let wrapped = async (msg, ...a) => {
     try {
       let res = await fnc(msg, ...a)
       return res
@@ -134,10 +135,27 @@ bot.on = (ev, fnc, ...a) => {
         // ignore
       }
     }
-  }, ...a)
+  }
+  events[ev] = wrapped
+  origOn(ev, wrapped, ...a)
 }
 
 bot.on(['/start', '/hello'], (msg) => msg.reply.text('This bot turns files into the required format for Telegram Stickers!\nJust send me your files and I\'ll convert them! (I also take links)\nNote: Images with transparency need to be sent as files!\nMade by: mkg20001 - Code: https://github.com/mkg20001/tg-sticker-convert-bot - Donations: https://paypal.me/mkg20001', {webPreview: false}))
+
+bot.on('forward', (msg) => {
+  switch (true) {
+    case Boolean(msg.document):
+      events.document(msg)
+      break
+    case Boolean(msg.text):
+      events.text(msg)
+      break
+    case Boolean(msg.photo):
+      events.photo(msg)
+      break
+    default: {}
+  }
+})
 
 bot.on('sticker', (msg) => {
   return msg.reply.text('You know you\'re supposed to send me files, not the completed stickers?!', { asReply: true })
