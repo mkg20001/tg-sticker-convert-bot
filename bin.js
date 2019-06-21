@@ -134,7 +134,7 @@ bot.on = (ev, fnc, ...a) => {
   }, ...a)
 }
 
-bot.on(['/start', '/hello'], (msg) => msg.reply.text('This bot turns files into the required format for Telegram Stickers!\nJust send me your files and I\'ll convert them! (I also take links)\nMade by: mkg20001 - Code: https://github.com/mkg20001/tg-sticker-convert-bot', {webPreview: false}))
+bot.on(['/start', '/hello'], (msg) => msg.reply.text('This bot turns files into the required format for Telegram Stickers!\nJust send me your files and I\'ll convert them! (I also take links)\nMade by: mkg20001 - Code: https://github.com/mkg20001/tg-sticker-convert-bot - Donations: https://paypal.me/mkg20001', {webPreview: false}))
 
 bot.on('sticker', (msg) => {
   return msg.reply.text('You know you\'re supposed to send me files, not the completed stickers?!', { asReply: true })
