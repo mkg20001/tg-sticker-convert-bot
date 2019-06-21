@@ -4,7 +4,7 @@
 
 const TeleBot = require('telebot')
 const bot = new TeleBot(process.argv[2])
-const ERROR_REPLY = 'Boom!\nYou just made this bot go kaboom!\nHave a :cookie:!'
+const ERROR_REPLY = 'Boom!\nYou just made this bot go kaboom!\nHave a 🍪️!'
 const fetch = require('node-fetch')
 const mkdir = require('mkdirp').sync
 const rimraf = require('rimraf').sync
@@ -50,7 +50,10 @@ const exec = (cmd, args) => new Promise((resolve, reject) => {
 
   p.once('exit', (code, sig) => {
     if (code || sig) {
-      return reject(new Error('Code/Sig ' + (code || sig)))
+      const e = new Error('Code/Sig ' + (code || sig))
+      e.stdout = String(p.stdout)
+      e.stderr = String(p.stderr)
+      return reject(e)
     }
 
     return resolve(p)
@@ -193,7 +196,7 @@ async function doConvert (input, reply, opt) {
 
   log.info({input, output}, 'Converting...')
 
-  await exec('convert', [input, '-resize', '512x512', output])
+  await exec('convert', [input, '-alpha', 'set', '-resize', '512x512', output])
 
   await reply.file(output, opt)
 
