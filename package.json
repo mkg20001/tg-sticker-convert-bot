@@ -17,14 +17,8 @@
   "author": "Maciej Krüger <mkg20001@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
-    "@sentry/node": "^5.4.2",
-    "bl": "^3.0.0",
     "emoji-dictionary": "^1.0.10",
-    "mkdirp": "^0.5.1",
-    "node-fetch": "^2.6.0",
-    "pino": "^5.12.6",
-    "rimraf": "^2.6.3",
-    "telebot": "^1.2.6",
+    "teleutils": "github:mkg20001/teleutils",
     "urijs": "^1.19.1"
   },
   "main": "bin.js",
