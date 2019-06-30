@@ -43,6 +43,7 @@ const nameToPng = (name) => {
   name = path.basename(name)
   const parsed = path.parse(name)
   parsed.ext = '.png'
+  delete parsed.base
   return path.format(parsed)
 }
 
