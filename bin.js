@@ -140,7 +140,19 @@ bot.on = (ev, fnc, ...a) => {
   origOn(ev, wrapped, ...a)
 }
 
-bot.on(['/start', '/hello'], (msg) => msg.reply.text('This bot turns files into the required format for Telegram Stickers!\nJust send me your files and I\'ll convert them! (I also take links)\nNote: Images with transparency need to be sent as files!\nMade by: mkg20001 - Code: https://github.com/mkg20001/tg-sticker-convert-bot - Donations: https://paypal.me/mkg20001', {webPreview: false}))
+const HELLO = `*This bot turns files into the required format for Telegram Stickers!*
+
+Just send me your files and I'll convert them!
+ \\* Transparent images must be sent as files/documents, otherwise they lose transparencey
+ \\* Links get downloaded and converted
+ \\* Stickers are accepted as well
+
+Oh, and could you please...
+ \\* Report bugs when you spot them: https://github.com/mkg20001/tg-sticker-convert-bot/issues
+ \\* Donate: https://paypal.me/mkg20001
+`
+
+bot.on(['/start', '/hello'], (msg) => msg.reply.text(HELLO, {webPreview: false, parseMode: 'markdown'}))
 
 bot.on('forward', (msg) => {
   switch (true) {
@@ -157,8 +169,10 @@ bot.on('forward', (msg) => {
   }
 })
 
-bot.on('sticker', (msg) => {
-  return msg.reply.text('You know you\'re supposed to send me files, not the completed stickers?!', { asReply: true })
+bot.on('sticker', async (msg) => {
+  const location = await tgFetch(msg.sticker)
+  await doConvert(location, msg.reply, {fileName: (msg.sticker.emoji ? msg.sticker.emoji + '_sticker' : 'sticker') + '.png'}) // can't send .webp since this gets interpreted as sticker automatically
+  // return msg.reply.text(location)
 })
 
 bot.on('document', async (msg) => {
