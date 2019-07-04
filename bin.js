@@ -49,6 +49,7 @@ const nameToPng = (name) => {
 
 const handleSticker = async (msg) => {
   const location = await core.fetch.tg(msg.sticker)
+  await msg.track('convert/sticker')
   await doConvert(location, msg.reply, {fileName: (msg.sticker.emoji ? emoji.getName(msg.sticker.emoji) + '_sticker' : 'sticker') + '.png'}) // can't send .webp since this gets interpreted as sticker automatically
 }
 const handleDocument = async (msg) => {
@@ -59,6 +60,7 @@ const handleDocument = async (msg) => {
 
   const location = await core.fetch.tg(doc)
 
+  await msg.track('convert/document')
   await doConvert(location, msg.reply, {fileName: nameToPng(doc.file_name), asReply: true})
 }
 const handlePhoto = async (msg) => {
@@ -68,6 +70,7 @@ const handlePhoto = async (msg) => {
 
   const location = await core.fetch.tg(bestPhoto)
 
+  await msg.track('convert/photo')
   await doConvert(location, msg.reply, {fileName: 'sticker.png', asReply: true})
 }
 const handleText = async (msg) => {
