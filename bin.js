@@ -106,17 +106,16 @@ bot.on('sticker', handleSticker)
 bot.on('document', handleDocument)
 bot.on('photo', handlePhoto)
 bot.on('text', handleText)
-bot.on('forward', (msg) => {
+bot.on('forward', async (msg) => {
   switch (true) {
+    case Boolean(msg.sticker):
+      return handleSticker(msg)
     case Boolean(msg.document):
-      handleDocument(msg)
-      break
+      return handleDocument(msg)
     case Boolean(msg.text):
-      handleText(msg)
-      break
+      return handleText(msg)
     case Boolean(msg.photo):
-      handlePhoto(msg)
-      break
+      return handlePhoto(msg)
     default: {} // eslint-disable-line no-empty
   }
 })
