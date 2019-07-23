@@ -31,7 +31,7 @@ async function doConvert (input, reply, opt) {
 
   log.info({input: input.path, output: output.path}, 'Converting...')
 
-  await core.exec('convert', [input.path, '-alpha', 'set', '-resize', '512x512', output.path])
+  await core.exec('convert', [input.path, '-define', 'png:extent=512kb', '-alpha', 'set', '-resize', '512x512', output.path])
 
   await reply.file(output.path, opt)
 
