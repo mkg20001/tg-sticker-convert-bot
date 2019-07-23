@@ -8,6 +8,10 @@ const log = pino({name: 'tg-sticker-convert-bot'})
 const emoji = require('emoji-dictionary')
 const URI = require('urijs')
 const path = require('path')
+const fs = require('fs')
+
+const imagemin = require('imagemin')
+const imageminPngquant = require('imagemin-pngquant')
 
 const HELLO = `*This bot turns files into the required format for Telegram Stickers!*
 
@@ -31,7 +35,24 @@ async function doConvert (input, reply, opt) {
 
   log.info({input: input.path, output: output.path}, 'Converting...')
 
-  await core.exec('convert', [input.path, '-define', 'png:extent=512kb', '-alpha', 'set', '-resize', '512x512', output.path])
+  await core.exec('convert', [input.path, '-alpha', 'set', '-resize', '512x512', output.path])
+
+  if (fs.lstatSync(output.path).size >= 512 * 1024) {
+    let compressed = core.tmp('_imagemin')
+
+    const files = await imagemin([output.path], {
+      destination: compressed.path,
+      plugins: [
+        imageminPngquant({
+          quality: [0.6, 0.8]
+        })
+      ]
+    })
+
+    output.cleanup()
+    output.cleanup = compressed.cleanup.bind(compressed)
+    output.path = files[0].destinationPath
+  }
 
   await reply.file(output.path, opt)
 

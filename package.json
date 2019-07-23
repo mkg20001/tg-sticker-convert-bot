@@ -18,6 +18,8 @@
   "license": "MPL-2.0",
   "dependencies": {
     "emoji-dictionary": "^1.0.10",
+    "imagemin": "^7.0.0",
+    "imagemin-pngquant": "^8.0.0",
     "teleutils": "github:mkg20001/teleutils",
     "urijs": "^1.19.1"
   },
