@@ -10,8 +10,17 @@ const URI = require('urijs')
 const path = require('path')
 const fs = require('fs')
 
-const imagemin = require('imagemin')
 const imageminPngquant = require('imagemin-pngquant')
+const imageminOptipng = require('imagemin-optipng')
+
+const imageOptimizers = [
+  imageminPngquant({
+    quality: [0.6, 0.8],
+    strip: true,
+    speed: 1
+  }),
+  imageminOptipng({ })
+]
 
 const HELLO = `*This bot turns files into the required format for Telegram Stickers!*
 
@@ -37,23 +46,14 @@ async function doConvert (input, reply, opt) {
 
   await core.exec('convert', [input.path, '-alpha', 'set', '-resize', '512x512', output.path])
 
-  if (fs.lstatSync(output.path).size >= 512 * 1024) {
-    let compressed = core.tmp('_imagemin')
+  if (fs.lstatSync(output.path).size >= 256 * 1024) {
+    const buffer = fs.readFileSync(output.path)
 
-    const files = await imagemin([output.path], {
-      destination: compressed.path,
-      plugins: [
-        imageminPngquant({
-          quality: [0.6, 0.8],
-          strip: true,
-          speed: 1
-        })
-      ]
-    })
+    const optimized = await Promise.all(imageOptimizers.map(optimize => optimize(buffer)))
 
-    output.cleanup()
-    output.cleanup = compressed.cleanup.bind(compressed)
-    output.path = files[0].destinationPath
+    const bestOptimized = optimized.sort((a, b) => a.length - b.length)[0]
+
+    fs.writeFileSync(output.path, bestOptimized)
   }
 
   await reply.file(output.path, opt)
