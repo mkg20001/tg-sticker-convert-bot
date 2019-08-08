@@ -44,7 +44,9 @@ async function doConvert (input, reply, opt) {
       destination: compressed.path,
       plugins: [
         imageminPngquant({
-          quality: [0.6, 0.8]
+          quality: [0.6, 0.8],
+          strip: true,
+          speed: 1
         })
       ]
     })
