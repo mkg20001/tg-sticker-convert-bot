@@ -72,8 +72,15 @@ const nameToPng = (name) => {
 
 const handleSticker = async (msg) => {
   const location = await core.fetch.tg(msg.sticker)
-  await msg.track('convert/sticker')
-  await doConvert(location, msg.reply, {fileName: (msg.sticker.emoji ? emoji.getName(msg.sticker.emoji) + '_sticker' : 'sticker') + '.png'}) // can't send .webp since this gets interpreted as sticker automatically
+  if (msg.sticker.is_animated) {
+    await msg.track('convert/animated_sticker')
+    let {chat: {id: cid}, message_id: msgId} = await msg.reply.file(location.path, {fileName: (msg.sticker.emoji ? emoji.getName(msg.sticker.emoji) + '_animated_sticker' : 'animated_sticker') + '.TGS', asReply: true})
+    await bot.sendMessage(cid, 'You can forward this to @stickers after issuing /newanimated to create a new animated pack with this sticker', {webPreview: false, replyToMessage: msgId})
+    location.cleanup()
+  } else {
+    await msg.track('convert/sticker')
+    await doConvert(location, msg.reply, {fileName: (msg.sticker.emoji ? emoji.getName(msg.sticker.emoji) + '_sticker' : 'sticker') + '.png', asReply: true}) // can't send .webp since this gets interpreted as sticker automatically
+  }
 }
 const handleDocument = async (msg) => {
   const doc = msg.document
