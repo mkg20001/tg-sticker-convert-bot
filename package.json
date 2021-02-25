@@ -3,7 +3,10 @@
   "template": {
     "extends": [
       "nodeEslint"
-    ]
+    ],
+    "node": {
+      "noNodeLock": true
+    }
   },
   "version": "0.1.1",
   "description": "Converts Telegram Photos / Documents into the required 512 .PNG format",
@@ -25,9 +28,9 @@
   "author": "Maciej Krüger <mkg20001@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
-    "emoji-dictionary": "^1.0.11",
     "imagemin-optipng": "^8.0.0",
     "imagemin-pngquant": "^9.0.1",
+    "emoji-dictionary": "^1.0.11",
     "teleutils": "^0.1.0",
     "urijs": "^1.19.6"
   },
