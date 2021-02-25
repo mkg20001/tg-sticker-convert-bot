@@ -1,0 +1,19 @@
+{
+  "overrides": [
+    {
+      "files": [
+        "test/**/*.js"
+      ],
+      "env": {
+        "mocha": true
+      }
+    }
+  ],
+  "extends": [
+    "oclif",
+    "ipfs"
+  ],
+  "rules": {
+    "no-await-in-loop": "off"
+  }
+}

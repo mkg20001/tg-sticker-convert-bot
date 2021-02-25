@@ -1,12 +1,20 @@
 {
   "name": "tg-sticker-convert-bot",
+  "template": {
+    "extends": [
+      "nodeEslint"
+    ]
+  },
   "version": "0.1.1",
   "description": "Converts Telegram Photos / Documents into the required 512 .PNG format",
   "bin": {
     "tg-sticker-convert-bot": "bin.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -A",
+    "cov": "nyc mocha",
+    "lint": "eslint .",
+    "fix": "eslint --fix ."
   },
   "keywords": [
     "telegram",
@@ -17,14 +25,21 @@
   "author": "Maciej Krüger <mkg20001@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
-    "emoji-dictionary": "^1.0.10",
-    "imagemin-optipng": "^7.0.0",
-    "imagemin-pngquant": "^8.0.0",
-    "teleutils": "github:mkg20001/teleutils",
-    "urijs": "^1.19.1"
+    "emoji-dictionary": "^1.0.11",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-pngquant": "^9.0.1",
+    "teleutils": "^0.1.0",
+    "urijs": "^1.19.6"
   },
   "main": "bin.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "eslint": "*",
+    "eslint-config-ipfs": "*",
+    "eslint-config-oclif": "*",
+    "mkgs-tool": "^0.1.14",
+    "mocha": "*",
+    "nyc": "*"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mkg20001/tg-sticker-convert-bot.git"
