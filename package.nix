@@ -9,12 +9,14 @@
 , pkg-config
 , optipng
 , pngquant
+, imagemagick
 }:
 
 let
   extraPath = [
     optipng
     pngquant
+    imagemagick
   ];
 in
 mkNode {
