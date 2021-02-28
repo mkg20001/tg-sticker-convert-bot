@@ -10,6 +10,7 @@
 , optipng
 , pngquant
 , imagemagick
+, webp
 }:
 
 let
@@ -17,6 +18,7 @@ let
     optipng
     pngquant
     imagemagick
+    webp
   ];
 in
 mkNode {
