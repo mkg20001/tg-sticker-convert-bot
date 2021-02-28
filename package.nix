@@ -47,7 +47,7 @@ mkNode {
     done) & p=$!
   '';
 
-  postBuild = ''
+  preFixup = ''
     for bin in $out/bin/*; do
       wrapProgram $bin --prefix PATH : ${lib.makeBinPath extraPath}
     done
