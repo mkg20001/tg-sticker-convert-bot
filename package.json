@@ -28,9 +28,9 @@
   "author": "Maciej Krüger <mkg20001@gmail.com>",
   "license": "MPL-2.0",
   "dependencies": {
-    "imagemin-optipng": "^8.0.0",
-    "imagemin-pngquant": "^9.0.1",
     "emoji-dictionary": "^1.0.11",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-pngquant": "^9.0.2",
     "teleutils": "^0.1.0",
     "urijs": "^1.19.6"
   },
@@ -39,7 +39,7 @@
     "eslint": "*",
     "eslint-config-ipfs": "*",
     "eslint-config-oclif": "*",
-    "mkgs-tool": "^0.1.14",
+    "mkgs-tool": "^0.1.15",
     "mocha": "*",
     "nyc": "*"
   },

@@ -11,7 +11,7 @@
   ],
   "extends": [
     "oclif",
-    "ipfs"
+    "ipfs/js"
   ],
   "rules": {
     "no-await-in-loop": "off"

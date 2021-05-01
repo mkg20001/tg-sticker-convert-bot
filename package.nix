@@ -2,7 +2,7 @@
 , lib
 , drvSrc ? ./.
 , mkNode
-, nodejs-14_x
+, nodejs-16_x
 , makeWrapper
 , zlib
 , libpng
@@ -21,7 +21,7 @@ let
 in
 mkNode {
   root = drvSrc;
-  nodejs = nodejs-14_x;
+  nodejs = nodejs-16_x;
   production = false;
   packageLock = ./package-lock.json;
 } {
