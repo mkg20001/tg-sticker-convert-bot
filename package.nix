@@ -35,6 +35,13 @@ mkNode {
     export LD=$CC
     export OPTIPNG=DIST=1
     export PNGQUANT_DIST=1
+    L=$(mktemp)
+    cp $lockfile $L
+    lockfile="$L"
+    OPTI_RES=$(cat $lockfile | jq -r '.packages["node_modules/optipng-bin"].resolved')
+    PNG_RES=$(cat $lockfile | jq -r '.packages["node_modules/pngquant-bin"].resolved')
+    sed "s|https://github.com/mkg20001/optipng-bin/releases/download/v7.0.0/optipng-bin-7.0.0.tgz|$OPTI_RES|g" -i $lockfile -i package.json
+    sed "s|https://github.com/mkg20001/pngquant-bin/releases/download/v6.0.0/pngquant-bin-6.0.0.tgz|$PNG_RES|g" -i $lockfile -i package.json
   '';
 
   preFixup = ''
