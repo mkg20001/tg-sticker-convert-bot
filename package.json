@@ -31,6 +31,8 @@
     "emoji-dictionary": "^1.0.11",
     "imagemin-optipng": "^8.0.0",
     "imagemin-pngquant": "^9.0.2",
+    "optipng-bin": "https://github.com/mkg20001/optipng-bin/releases/download/v7.0.0/optipng-bin-7.0.0.tgz",
+    "pngquant-bin": "https://github.com/mkg20001/pngquant-bin/releases/download/v6.0.0/pngquant-bin-6.0.0.tgz",
     "teleutils": "^0.1.0",
     "urijs": "^1.19.6"
   },

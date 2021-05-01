@@ -33,23 +33,19 @@ mkNode {
 
   postPatch = ''
     export LD=$CC
-    
-    (while sleep .01; do
-      for mod in node_modules $out/node_modules; do
-        if [ -e $mod/pngquant-bin ] && [ ! -e $mod/pngquant-bin/vendor/pngquant ]; then
-          mkdir -p $mod/pngquant-bin/vendor
-          ln -sf ${pngquant}/bin/pngquant $mod/pngquant-bin/vendor/pngquant
-        fi
-
-        if [ -e $mod/optipng-bin ] && [ ! -e $mod/optipng-bin/vendor/optipng ]; then
-          mkdir -p $mod/pngquant-bin/vendor
-          ln -sf ${optipng}/bin/optipng $mod/optipng-bin/vendor/optipng
-        fi
-      done
-    done) & p=$!
+    export OPTIPNG=DIST=1
+    export PNGQUANT_DIST=1
   '';
 
   preFixup = ''
+    mod=$out/node_modules
+
+    mkdir -p $mod/pngquant-bin/vendor
+    ln -sf ${pngquant}/bin/pngquant $mod/pngquant-bin/vendor/pngquant
+
+    mkdir -p $mod/pngquant-bin/vendor
+    ln -sf ${optipng}/bin/optipng $mod/optipng-bin/vendor/optipng
+
     for bin in $out/bin/*; do
       wrapProgram $bin --prefix PATH : ${lib.makeBinPath extraPath}
     done
